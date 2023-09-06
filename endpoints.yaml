@@ -1,0 +1,7 @@
+version: 0.1
+endpoints:
+ - name: mediation service 3 EP
+   port: 9090
+   type: REST
+   networkVisibility: Public
+   context: /test
