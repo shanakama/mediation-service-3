@@ -111,8 +111,8 @@ configurable string Endpoint = "https://127.0.0.1:8090/test";
 configurable string SandboxEndpoint = "https://127.0.0.1:8090/test";
 configurable map<boolean> AdvancedSettings = {};
 
-final http:Client backendEP = check new (Endpoint, config = {secureSocket: {enable: check boolean:fromString("true"), cert: "/home/ballerina/cer.pem", verifyHostName: AdvancedSettings.hasKey("verifyHostname") ? AdvancedSettings.get("verifyHostname") : true}});
-final http:Client sandboxEP = check new (SandboxEndpoint, config = {secureSocket: {enable: check boolean:fromString("true"), cert: "/home/ballerina/cer.pem", verifyHostName: AdvancedSettings.hasKey("verifyHostname") ? AdvancedSettings.get("verifyHostname") : true}});
+final http:Client backendEP = check new (Endpoint, config = {secureSocket: {enable: check boolean:fromString("true"), cert: "/home/ballerina/server.crt", verifyHostName: AdvancedSettings.hasKey("verifyHostname") ? AdvancedSettings.get("verifyHostname") : true}});
+final http:Client sandboxEP = check new (SandboxEndpoint, config = {secureSocket: {enable: check boolean:fromString("true"), cert: "/home/ballerina/server.crt", verifyHostName: AdvancedSettings.hasKey("verifyHostname") ? AdvancedSettings.get("verifyHostname") : true}});
 
 function createDefaultErrorResponse(error err) returns http:Response {
     http:Response resp = new;
