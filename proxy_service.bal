@@ -107,13 +107,31 @@ service on ep0 {
     }
 }
 
-configurable string Endpoint = "https://127.0.0.1:8090/test";
-configurable string SandboxEndpoint = "https://127.0.0.1:8090/test";
-configurable map<boolean> AdvancedSettings = {};
+configurable string Endpoint = "https://run.mocky.io/v3/ec70c5ac-9813-457a-8eac-38ab2dab0c17";
+configurable string SandboxEndpoint = "http://www.google.com";
+configurable map<anydata> AdvancedSettings = {
+	verifyHostname: false,
+	httpVersion: "1.2"
+};
 
-final http:Client backendEP = check new (Endpoint, config = {secureSocket: {enable: check boolean:fromString("true"), cert: "/home/ballerina/server.crt", verifyHostName: AdvancedSettings.hasKey("verifyHostname") ? AdvancedSettings.get("verifyHostname") : true}});
-final http:Client sandboxEP = check new (SandboxEndpoint, config = {secureSocket: {enable: check boolean:fromString("true"), cert: "/home/ballerina/server.crt", verifyHostName: AdvancedSettings.hasKey("verifyHostname") ? AdvancedSettings.get("verifyHostname") : true}});
-
+final http:Client backendEP = check new(Endpoint, config = {
+    secureSocket: {
+        enable: check boolean:fromString("false"),
+         cert: "/home/ballerina/ca.pem",
+        verifyHostName: AdvancedSettings.hasKey("verifyHostname") ? <boolean>AdvancedSettings.get("verifyHostname") : true
+    },
+    timeout: 300,
+    httpVersion: AdvancedSettings.hasKey("httpVersion") ? <http:HttpVersion>AdvancedSettings.get("httpVersion") : "2.0"
+});
+final http:Client sandboxEP = check new(SandboxEndpoint, config = {
+    secureSocket: {
+        enable: check boolean:fromString("false"),
+         cert: "/home/ballerina/sand_ca.pem",
+        verifyHostName: AdvancedSettings.hasKey("verifyHostname") ?  <boolean>AdvancedSettings.get("verifyHostname") : true
+    },
+    timeout: 300,
+    httpVersion: AdvancedSettings.hasKey("httpVersion") ? <http:HttpVersion>AdvancedSettings.get("httpVersion") : "2.0"
+});
 function createDefaultErrorResponse(error err) returns http:Response {
     http:Response resp = new;
     log:printError(err.message(), (), err.stackTrace(), details = err.detail().toString());
