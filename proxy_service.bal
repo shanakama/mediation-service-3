@@ -109,7 +109,7 @@ service on ep0 {
 
 configurable string Endpoint = "https://run.mocky.io/v3/ec70c5ac-9813-457a-8eac-38ab2dab0c17";
 configurable string SandboxEndpoint = "http://www.google.com";
-configurable map<boolean | http:HttpVersion> AdvancedSettings = {
+configurable map<boolean | string> AdvancedSettings = {
 	verifyHostname: false,
 	httpVersion: "2.0"
 };
@@ -121,7 +121,7 @@ final http:Client backendEP = check new(Endpoint, config = {
         verifyHostName: AdvancedSettings.hasKey("verifyHostname") ? <boolean>AdvancedSettings.get("verifyHostname") : true
     },
     timeout: 300,
-    httpVersion: AdvancedSettings.hasKey("httpVersion") ? <http:HttpVersion>AdvancedSettings.get("httpVersion") : "2.0"
+    httpVersion: AdvancedSettings.hasKey("httpVersion") ? <http:HttpVersion>(<anydata>AdvancedSettings.get("httpVersion")) : "2.0"
 });
 final http:Client sandboxEP = check new(SandboxEndpoint, config = {
     secureSocket: {
@@ -130,7 +130,7 @@ final http:Client sandboxEP = check new(SandboxEndpoint, config = {
         verifyHostName: AdvancedSettings.hasKey("verifyHostname") ?  <boolean>AdvancedSettings.get("verifyHostname") : true
     },
     timeout: 300,
-    httpVersion: AdvancedSettings.hasKey("httpVersion") ? <http:HttpVersion>AdvancedSettings.get("httpVersion") : "2.0"
+    httpVersion: AdvancedSettings.hasKey("httpVersion") ? <http:HttpVersion>(<anydata>AdvancedSettings.get("httpVersion")) : "2.0"
 });
 function createDefaultErrorResponse(error err) returns http:Response {
     http:Response resp = new;
