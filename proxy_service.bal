@@ -109,9 +109,9 @@ service on ep0 {
 
 configurable string Endpoint = "https://run.mocky.io/v3/ec70c5ac-9813-457a-8eac-38ab2dab0c17";
 configurable string SandboxEndpoint = "http://www.google.com";
-configurable map<anydata> AdvancedSettings = {
+configurable map<boolean | http:HttpVersion> AdvancedSettings = {
 	verifyHostname: false,
-	httpVersion: "1.2"
+	httpVersion: "2.0"
 };
 
 final http:Client backendEP = check new(Endpoint, config = {
