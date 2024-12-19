@@ -109,6 +109,7 @@ service on ep0 {
 
 configurable string Endpoint = "https://run.mocky.io/v3/ec70c5ac-9813-457a-8eac-38ab2dab0c17";
 configurable string SandboxEndpoint = "http://www.google.com";
+configurable string certPath = "test";
 configurable map<string> AdvancedSettings = {
 	verifyHostname: "false",
 	httpVersion: "2.0"
